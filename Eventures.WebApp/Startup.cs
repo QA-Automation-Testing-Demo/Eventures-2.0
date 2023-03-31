@@ -26,7 +26,7 @@ namespace Eventures.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                opt.UseInMemoryDatabase("MyInMemoryDatabase"));
             services.AddIdentity<EventuresUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
