@@ -27,6 +27,9 @@ namespace Eventures.WebApp
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseInMemoryDatabase("MyInMemoryDatabase"));
+
+            // To connect to a real database, use the following line of code instead of the above line.
+            // opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<EventuresUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
