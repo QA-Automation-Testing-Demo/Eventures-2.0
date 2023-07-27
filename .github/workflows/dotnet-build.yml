@@ -15,8 +15,8 @@ jobs:
       # Update ChromeDriver to match the installed Chrome version
       - name: Update ChromeDriver
         run: |
-          CHROME_VERSION="115.0.5790.110"
-          CHROMEDRIVER_VERSION="115.0.5790.110"  # Replace with the correct ChromeDriver version
+          CHROME_VERSION="115.0.5790.10200"
+          CHROMEDRIVER_VERSION="your_specific_chromedriver_version_here"  # Replace with the correct ChromeDriver version
           
           # Download and install the specific version of ChromeDriver
           wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
@@ -32,4 +32,3 @@ jobs:
       - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
       - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
-
