@@ -8,23 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Install the latest stable version of Google Chrome
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
-
-      # Update ChromeDriver to match the installed Chrome version
-      - name: Update ChromeDriver
-        run: |
-          CHROME_VERSION="115.0.5790.110"
-          CHROMEDRIVER_VERSION="115.0.5790.10200"  # Replace with the correct ChromeDriver version
-          
-          # Download and install the specific version of ChromeDriver
-          wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-          rm chromedriver_linux64.zip
-
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumTests --no-build --verbosity normal
