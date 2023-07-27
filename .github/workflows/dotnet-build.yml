@@ -1,31 +1,23 @@
 name: Build and Test
 on: [push, workflow_dispatch]
-
 jobs:
   WebApp-tests:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
-      # Install the specific version of Google Chrome
-      - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          version: "115.0.5790.102"  # Replace with the correct Chrome version
-
-      # Update ChromeDriver to match the installed Chrome version
-      - name: Update ChromeDriver
+      - name: Set up ChromeDriver
         run: |
-          CHROME_VERSION="115.0.5790.102"
-          CHROMEDRIVER_VERSION="115.0.5790.102"  # Replace with the correct ChromeDriver version
-          
-         
+          CHROME_VERSION="115.0.5790.102"  # Replace with the version of your installed Google Chrome
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/latest-patch-version/${CHROME_VERSION}/LATEST_RELEASE")  # Fetch the compatible ChromeDriver version
+          wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          chmod +x chromedriver
+          sudo mv chromedriver /usr/local/bin/
+          rm chromedriver_linux64.zip
+
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumTests --no-build --verbosity normal
-
       - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
       - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
-
