@@ -21,16 +21,21 @@ jobs:
 
           if [ "$LATEST_CHROMEDRIVER_VERSION" != "$CHROMEDRIVER_VERSION" ]; then
             # Download and install the specific version of ChromeDriver
-            curl -Lo chromedriver.zip "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-            unzip chromedriver.zip
+            wget -N "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+            unzip chromedriver_linux64.zip
             sudo mv chromedriver /usr/local/bin/
             sudo chmod +x /usr/local/bin/chromedriver
-            rm chromedriver.zip
+            rm chromedriver_linux64.zip
           fi
 
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumTests --no-build --verbosity normal
+
+      - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
+      - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
+      - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
+
 
       - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
       - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
