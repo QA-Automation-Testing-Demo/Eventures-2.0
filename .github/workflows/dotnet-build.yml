@@ -35,9 +35,3 @@ jobs:
       - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
       - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
-
-
-      - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
-      - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
-      - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
-
