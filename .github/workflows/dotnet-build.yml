@@ -20,9 +20,12 @@ jobs:
           CHROMEDRIVER_VERSION=$(chromedriver --version | awk '{print $2}')
 
           if [ "$LATEST_CHROMEDRIVER_VERSION" != "$CHROMEDRIVER_VERSION" ]; then
-            sudo apt-get update
-            sudo apt-get install -y "chromium-chromedriver=$LATEST_CHROMEDRIVER_VERSION-0ubuntu0.18.04.1"
-            sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+            # Download and install the specific version of ChromeDriver
+            curl -Lo chromedriver.zip "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+            unzip chromedriver.zip
+            sudo mv chromedriver /usr/local/bin/
+            sudo chmod +x /usr/local/bin/chromedriver
+            rm chromedriver.zip
           fi
 
       - run: dotnet restore Eventures.WebApp.SeleniumTests
@@ -32,3 +35,4 @@ jobs:
       - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
       - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
+
