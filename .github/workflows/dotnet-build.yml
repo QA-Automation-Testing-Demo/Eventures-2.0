@@ -12,21 +12,18 @@ jobs:
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@v1
 
-      # Update ChromeDriver to match the installed Chrome version
+      # Update ChromeDriver to a specific version
       - name: Update ChromeDriver
         run: |
-          LATEST_CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-          LATEST_CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$LATEST_CHROME_VERSION")
-          CHROMEDRIVER_VERSION=$(chromedriver --version | awk '{print $2}')
-
-          if [ "$LATEST_CHROMEDRIVER_VERSION" != "$CHROMEDRIVER_VERSION" ]; then
-            # Download and install the specific version of ChromeDriver
-            wget -N "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-            unzip chromedriver_linux64.zip
-            sudo mv chromedriver /usr/local/bin/
-            sudo chmod +x /usr/local/bin/chromedriver
-            rm chromedriver_linux64.zip
-          fi
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          CHROMEDRIVER_VERSION="your_specific_chromedriver_version_here"  # Replace with the version you need
+          
+          # Download and install the specific version of ChromeDriver
+          wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          rm chromedriver_linux64.zip
 
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
