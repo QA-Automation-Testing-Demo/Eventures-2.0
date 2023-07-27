@@ -14,6 +14,7 @@ jobs:
           chmod +x chromedriver
           sudo mv chromedriver /usr/local/bin/
           rm chromedriver_linux64.zip
+        shell: /usr/bin/bash -e {0}
 
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
