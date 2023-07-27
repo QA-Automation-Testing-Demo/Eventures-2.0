@@ -1,13 +1,34 @@
 name: Build and Test
 on: [push, workflow_dispatch]
+
 jobs:
   WebApp-tests:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
+
+      # Install the latest stable version of Google Chrome
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      # Update ChromeDriver to match the installed Chrome version
+      - name: Update ChromeDriver
+        run: |
+          LATEST_CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          LATEST_CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$LATEST_CHROME_VERSION")
+          CHROMEDRIVER_VERSION=$(chromedriver --version | awk '{print $2}')
+
+          if [ "$LATEST_CHROMEDRIVER_VERSION" != "$CHROMEDRIVER_VERSION" ]; then
+            sudo apt-get update
+            sudo apt-get install -y "chromium-chromedriver=$LATEST_CHROMEDRIVER_VERSION-0ubuntu0.18.04.1"
+            sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+          fi
+
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumTests --no-build --verbosity normal
+
       - run: dotnet restore Eventures.WebApp.SeleniumPOMTests
       - run: dotnet build Eventures.WebApp.SeleniumPOMTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumPOMTests --no-build --verbosity normal
