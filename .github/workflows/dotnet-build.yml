@@ -20,13 +20,7 @@ jobs:
           CHROME_VERSION="115.0.5790.102"
           CHROMEDRIVER_VERSION="115.0.5790.102"  # Replace with the correct ChromeDriver version
           
-          # Download and install the specific version of ChromeDriver
-          wget -N "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/115.0.5790.102/linux64/chrome-linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-          rm chromedriver_linux64.zip
-
+         
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumTests --no-build --verbosity normal
