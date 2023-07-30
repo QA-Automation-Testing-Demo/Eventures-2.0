@@ -5,17 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up ChromeDriver
-        run: |
-          CHROME_VERSION="115.0.5790.102"  # Replace with the version of your installed Google Chrome
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/latest-patch-version/${CHROME_VERSION}/LATEST_RELEASE")  # Fetch the compatible ChromeDriver version
-          wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          chmod +x chromedriver
-          sudo mv chromedriver /usr/local/bin/
-          rm chromedriver_linux64.zip
-        shell: /usr/bin/bash -e {0}
-
       - run: dotnet restore Eventures.WebApp.SeleniumTests
       - run: dotnet build Eventures.WebApp.SeleniumTests --no-restore
       - run: dotnet test Eventures.WebApp.SeleniumTests --no-build --verbosity normal
